@@ -1,26 +1,37 @@
-var canvas = document.getElementById("pixelCanvas");
-
+var canvas = document.getElementById("canvas");
 var context = canvas.getContext("2d");
+var pixels;
 
 var displayWidth = 84;
 var displayHeight = 48;
 var pixelSize = 10;
 var fillColor = "black";
 
-var pixels = new Array(displayWidth);
-for ( var p_row = 0; p_row < displayWidth; p_row++ ) {
-  pixels[p_row] = new Array(displayHeight);
-  for ( var p_col = 0; p_col < displayHeight; p_col++ ) {
-    pixels[p_row][p_col] = 0;
-  }
-}
-
-canvas.width = pixelSize*displayWidth;
-canvas.height = pixelSize*displayHeight;
+init();
 
 canvas.addEventListener("click", canvasOnClick, false);
 
-!function drawGrid() {
+document.getElementById("button-clean").addEventListener("click", function(e) {
+  e.preventDefault;
+  init();
+
+}, false);
+
+function init() {
+  pixels = new Array(displayWidth);
+  for ( var p_row = 0; p_row < displayWidth; p_row++ ) {
+    pixels[p_row] = new Array(displayHeight);
+    for ( var p_col = 0; p_col < displayHeight; p_col++ ) {
+      pixels[p_row][p_col] = 0;
+    }
+  }
+  canvas.width = pixelSize*displayWidth;
+  canvas.height = pixelSize*displayHeight;
+
+  drawGrid();
+}
+
+function drawGrid() {
   for ( var x = 0.5; x < canvas.width; x += pixelSize) {
     context.moveTo(x, 0);
     context.lineTo(x, canvas.height);
@@ -47,8 +58,7 @@ canvas.addEventListener("click", canvasOnClick, false);
 
   context.strokeStyle = "#999";
   context.stroke();
-
-}();
+}
 
 function Pixel(x, y) {
   this.x = x;
@@ -74,18 +84,13 @@ function fillPixel(pixel) {
 
 function clearPixel(pixel) {
   if ( pixels[pixel.x][pixel.y] ) {
-    context.fillStyle = "#ddd";
-    //context.fillRect(pixelSize*pixel.x+1.5, pixelSize*pixel.y+1.5, pixelSize-1, pixelSize-1);
     context.clearRect(pixelSize*pixel.x+1, pixelSize*pixel.y+1, pixelSize-1, pixelSize-1);
     pixels[pixel.x][pixel.y] = 0;
   }
 }
 
-
 function canvasOnClick(e) {
   var pixel = getPixelOnCursor(e);
-  
-  //fillPixel(pixel);
   togglePixel(pixel);
 }
 
@@ -107,8 +112,6 @@ function getPixelOnCursor(e) {
 
   x = Math.floor(cursor_x / pixelSize);
   y = Math.floor(cursor_y / pixelSize);
-
-  //alert("(" + x + ", " + y + ")");
 
   var pixel = new Pixel(x, y);
 
