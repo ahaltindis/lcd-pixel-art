@@ -1,5 +1,10 @@
 body {
 }
+
+input {
+  margin: 5px 0 5px 0;
+}
+
 #header {
   margin: 0 auto;
   text-align: center;

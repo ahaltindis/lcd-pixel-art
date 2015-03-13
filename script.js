@@ -7,15 +7,30 @@ var displayHeight = 48;
 var pixelSize = 10;
 var fillColor = "black";
 
+var btnClean = document.getElementById("button-clean");
+var btnZoomIn = document.getElementById("button-zoom-in");
+var btnZoomOut = document.getElementById("button-zoom-out");
+
 init();
 
 canvas.addEventListener("click", canvasOnClick, false);
 
-document.getElementById("button-clean").addEventListener("click", function(e) {
+btnClean.addEventListener("click", function(e) {
   e.preventDefault;
   init();
+});
 
-}, false);
+btnZoomIn.addEventListener("click", function(e) {
+  e.preventDefault;
+  pixelSize++;
+  refillGrid();
+});
+
+btnZoomOut.addEventListener("click", function(e) {
+  e.preventDefault;
+  pixelSize--;
+  refillGrid();
+});
 
 function init() {
   pixels = new Array(displayWidth);
@@ -29,6 +44,22 @@ function init() {
   canvas.height = pixelSize*displayHeight;
 
   drawGrid();
+}
+
+function refillGrid() {
+  canvas.width = pixelSize*displayWidth;
+  canvas.height = pixelSize*displayHeight;
+
+  drawGrid();
+
+  for ( var p_row = 0; p_row < displayWidth; p_row++ ) {
+    for ( var p_col = 0; p_col < displayHeight; p_col++ ) {
+      if ( pixels[p_row][p_col] ) {
+        context.fillStyle = fillColor;
+        context.fillRect(pixelSize*p_row+1, pixelSize*p_col+1, pixelSize-1, pixelSize-1);
+      }
+    }
+  }
 }
 
 function drawGrid() {
