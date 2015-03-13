@@ -1,5 +1,6 @@
-var canvas = document.getElementById("pixelCanvas"),
-  context = canvas.getContext("2d");
+var canvas = document.getElementById("pixelCanvas");
+
+var context = canvas.getContext("2d");
 
 var displayWidth = 84;
 var displayHeight = 48;
@@ -22,9 +23,6 @@ for ( var y = 0.5; y < canvas.height; y += pixelSize) {
 context.strokeStyle = "#ddd";
 context.stroke();
 
-//context.fillRect(15, 15, 15, 15);
-//context.fillRect(45, 15, 15, 15);
-
 context.beginPath();
 for ( var x = 0.5; x < canvas.width; x += pixelSize*6) {
   context.moveTo(x, 0);
@@ -38,3 +36,17 @@ for ( var y = 0.5; y < canvas.height; y += pixelSize*8) {
 
 context.strokeStyle = "#999";
 context.stroke();
+
+canvas.addEventListener("click", drawOnClick, false);
+
+var count_x = 0;
+var count_y = 0;
+
+function drawOnClick(e) {
+  if ( count_x >= displayWidth ) {
+    count_x = 0;
+    count_y++;
+  }
+  context.fillRect(pixelSize*count_x+0.5, pixelSize*count_y+0.5, pixelSize, pixelSize);
+  count_x++;
+}
