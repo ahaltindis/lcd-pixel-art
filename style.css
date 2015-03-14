@@ -37,3 +37,21 @@ input {
   font-size: 18px;
   font-weight: bold;
 }
+
+#pen-mode {
+  margin-top: 20px;
+}
+
+#pen-modes {
+  margin-top: 10px;
+}
+
+#pen-modes input {
+  margin-left: 10px;
+}
+
+#pen-modes label {
+  margin-right: 5px;
+  font-size: 15px;
+  margin-left: 2px;
+}

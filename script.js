@@ -11,13 +11,22 @@ var btnClean = document.getElementById("button-clean");
 var btnZoomIn = document.getElementById("button-zoom-in");
 var btnZoomOut = document.getElementById("button-zoom-out");
 
+var penModes = document.penModes.penMode
+var penMode = "toggle";
+
+for ( var i = 0; i < penModes.length; i++ ) {
+  penModes[i].onchange = function() {
+    penMode = this.value;
+  }
+}
+
 var drawing = false;
 
 init();
 
 canvas.addEventListener("mousedown", function(e) {
   var pixel = getPixelOnCursor(e);
-  togglePixel(pixel);
+  onClickPixel(pixel);
   drawing = true;
 });
 
@@ -28,7 +37,7 @@ canvas.addEventListener("mouseup", function(e) {
 canvas.addEventListener("mousemove", function(e) {
   if ( drawing ) {
     var pixel = getPixelOnCursor(e);
-    togglePixel(pixel);
+    onClickPixel(pixel);
   }
 });
 
@@ -118,6 +127,18 @@ function drawGrid() {
 function Pixel(x, y) {
   this.x = x;
   this.y = y;
+}
+
+function onClickPixel(pixel) {
+  if ( penMode === "toggle") {
+    togglePixel(pixel);
+  }
+  else if ( penMode === "fill" ) {
+    fillPixel(pixel);
+  }
+  else if ( penMode === "clear" ) {
+    clearPixel(pixel);
+  }
 }
 
 function togglePixel(pixel) {
