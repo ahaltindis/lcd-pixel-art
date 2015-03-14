@@ -11,9 +11,26 @@ var btnClean = document.getElementById("button-clean");
 var btnZoomIn = document.getElementById("button-zoom-in");
 var btnZoomOut = document.getElementById("button-zoom-out");
 
+var drawing = false;
+
 init();
 
-canvas.addEventListener("click", canvasOnClick, false);
+canvas.addEventListener("mousedown", function(e) {
+  var pixel = getPixelOnCursor(e);
+  togglePixel(pixel);
+  drawing = true;
+});
+
+canvas.addEventListener("mouseup", function(e) {
+  drawing = false;
+});
+
+canvas.addEventListener("mousemove", function(e) {
+  if ( drawing ) {
+    var pixel = getPixelOnCursor(e);
+    togglePixel(pixel);
+  }
+});
 
 btnClean.addEventListener("click", function(e) {
   e.preventDefault;
@@ -125,11 +142,6 @@ function clearPixel(pixel) {
     context.clearRect(pixelSize*pixel.x+1, pixelSize*pixel.y+1, pixelSize-1, pixelSize-1);
     pixels[pixel.x][pixel.y] = 0;
   }
-}
-
-function canvasOnClick(e) {
-  var pixel = getPixelOnCursor(e);
-  togglePixel(pixel);
 }
 
 function getPixelOnCursor(e) {
