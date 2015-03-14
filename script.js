@@ -1,74 +1,39 @@
+/* script.js
+ * =========
+ * Javascript codes of lcd-pixel-art project.
+ * 
+ */
+
+//-- Dom elements
 var canvas = document.getElementById("canvas");
-var context = canvas.getContext("2d");
-var pixels;
-
-var displayWidth = 84;
-var displayHeight = 48;
-var pixelSize = 10;
-var fillColor = "black";
-
 var btnClean = document.getElementById("button-clean");
 var btnZoomIn = document.getElementById("button-zoom-in");
 var btnZoomOut = document.getElementById("button-zoom-out");
-
 var penModes = document.penModes.penMode
+var context = canvas.getContext("2d");
+
+//-- Global variables
+// Holds all pixel status(1 or 0) as a matrix. 
+// [DisplayWidth][DisplayHeight]
+var pixels;
+
+// Current penMode as string ("toggle", "fill", "clear")
 var penMode;
 
-for ( var i = 0; i < penModes.length; i++ ) {
-  if ( penModes[i].checked ) {
-    penMode = penModes[i].value;
-  }
-  penModes[i].onchange = function() {
-    penMode = this.value;
-  }
-}
-
+//-- State variables
 var drawing = false;
 
+//-- Predefined variables
+var displayWidth = 84;
+var displayHeight = 48;
+var pixelSize = 10;
+var fillColor = "#000";
+
 init();
-
-canvas.addEventListener("mousedown", function(e) {
-  var pixel = getPixelOnCursor(e);
-  onClickPixel(pixel);
-  drawing = true;
-});
-
-canvas.addEventListener("mouseup", function(e) {
-  drawing = false;
-});
-
-canvas.addEventListener("mousemove", function(e) {
-  if ( drawing ) {
-    var pixel = getPixelOnCursor(e);
-    onClickPixel(pixel);
-  }
-});
-
-btnClean.addEventListener("click", function(e) {
-  e.preventDefault;
-  init();
-});
-
-btnZoomIn.addEventListener("click", function(e) {
-  e.preventDefault;
-  if ( pixelSize < 30 ) {
-    pixelSize++;
-    refillGrid();
-  }
-});
-
-btnZoomOut.addEventListener("click", function(e) {
-  e.preventDefault;
-  if ( pixelSize > 1 ) {
-    pixelSize--;
-    refillGrid();
-  }
-  else {
-    alert("Grid size cannot be smaller.");
-  }
-});
+initEventListeners();
 
 function init() {
+  //initialize pixels matrix
   pixels = new Array(displayWidth);
   for ( var p_row = 0; p_row < displayWidth; p_row++ ) {
     pixels[p_row] = new Array(displayHeight);
@@ -76,17 +41,71 @@ function init() {
       pixels[p_row][p_col] = 0;
     }
   }
+
+  //Set canvas size
   canvas.width = pixelSize*displayWidth;
   canvas.height = pixelSize*displayHeight;
 
+  //Draw grids
   drawGrid();
 }
+
+function initEventListeners() {
+  canvas.addEventListener("mousedown", function(e) {
+    var pixel = getPixelOnCursor(e);
+    onClickPixel(pixel);
+    drawing = true;
+  });
+
+  canvas.addEventListener("mouseup", function(e) {
+    drawing = false;
+  });
+
+  canvas.addEventListener("mousemove", function(e) {
+    if ( drawing ) {
+      var pixel = getPixelOnCursor(e);
+      onClickPixel(pixel);
+    }
+  });
+
+  btnClean.onclick = function(e) {
+    e.preventDefault;
+    init();
+  }
+
+  btnZoomIn.onclick = function(e) {
+    e.preventDefault;
+    if ( pixelSize < 30 ) {
+      pixelSize++;
+      refillGrid();
+    }
+  }
+
+  btnZoomOut.onclick = function(e) {
+    e.preventDefault;
+    if ( pixelSize > 1 ) {
+      pixelSize--;
+      refillGrid();
+    }
+    else {
+      alert("Grid size cannot be smaller.");
+    }
+  }
+
+  for ( var i = 0; i < penModes.length; i++ ) {
+    if ( penModes[i].checked ) {
+      penMode = penModes[i].value;
+    }
+    penModes[i].onchange = function() {
+      penMode = this.value;
+    }
+  }
+}
+
 
 function refillGrid() {
   canvas.width = pixelSize*displayWidth;
   canvas.height = pixelSize*displayHeight;
-
-  drawGrid();
 
   for ( var p_row = 0; p_row < displayWidth; p_row++ ) {
     for ( var p_col = 0; p_col < displayHeight; p_col++ ) {
@@ -96,6 +115,8 @@ function refillGrid() {
       }
     }
   }
+
+  drawGrid();
 }
 
 function drawGrid() {
