@@ -12,9 +12,12 @@ var btnZoomIn = document.getElementById("button-zoom-in");
 var btnZoomOut = document.getElementById("button-zoom-out");
 
 var penModes = document.penModes.penMode
-var penMode = "toggle";
+var penMode;
 
 for ( var i = 0; i < penModes.length; i++ ) {
+  if ( penModes[i].checked ) {
+    penMode = penModes[i].value;
+  }
   penModes[i].onchange = function() {
     penMode = this.value;
   }
