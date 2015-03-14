@@ -22,14 +22,21 @@ btnClean.addEventListener("click", function(e) {
 
 btnZoomIn.addEventListener("click", function(e) {
   e.preventDefault;
-  pixelSize++;
-  refillGrid();
+  if ( pixelSize < 30 ) {
+    pixelSize++;
+    refillGrid();
+  }
 });
 
 btnZoomOut.addEventListener("click", function(e) {
   e.preventDefault;
-  pixelSize--;
-  refillGrid();
+  if ( pixelSize > 1 ) {
+    pixelSize--;
+    refillGrid();
+  }
+  else {
+    alert("Grid size cannot be smaller.");
+  }
 });
 
 function init() {
