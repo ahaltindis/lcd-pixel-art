@@ -7,6 +7,7 @@
 //-- Dom elements
 var canvas = document.getElementById("canvas");
 var btnClean = document.getElementById("button-clean");
+var btnReverse = document.getElementById("button-reverse");
 var btnZoomIn = document.getElementById("button-zoom-in");
 var btnZoomOut = document.getElementById("button-zoom-out");
 var penModes = document.penModes.penMode
@@ -73,6 +74,11 @@ function initEventListeners() {
     init();
   }
 
+  btnReverse.onclick = function(e) {
+    e.preventDefault;
+    reverseFill();
+  }
+
   btnZoomIn.onclick = function(e) {
     e.preventDefault;
     if ( pixelSize < 30 ) {
@@ -102,7 +108,6 @@ function initEventListeners() {
   }
 }
 
-
 function refillGrid() {
   canvas.width = pixelSize*displayWidth;
   canvas.height = pixelSize*displayHeight;
@@ -112,6 +117,24 @@ function refillGrid() {
       if ( pixels[p_row][p_col] ) {
         context.fillStyle = fillColor;
         context.fillRect(pixelSize*p_row+1, pixelSize*p_col+1, pixelSize-1, pixelSize-1);
+      }
+    }
+  }
+
+  drawGrid();
+}
+
+function reverseFill() {
+  canvas.width = pixelSize*displayWidth;
+  canvas.height = pixelSize*displayHeight;
+
+  for ( var p_row = 0; p_row < displayWidth; p_row++ ) {
+    for ( var p_col = 0; p_col < displayHeight; p_col++ ) {
+      if ( pixels[p_row][p_col] ) {
+        clearPixel(new Pixel(p_row, p_col));
+      }
+      else {
+        fillPixel(new Pixel(p_row, p_col));
       }
     }
   }
