@@ -6,6 +6,7 @@
 
 //-- Dom elements
 var canvas = document.getElementById("canvas");
+var canvasContainer = document.getElementById("canvas-container");
 var btnClean = document.getElementById("button-clean");
 var btnReverse = document.getElementById("button-reverse");
 var btnZoomIn = document.getElementById("button-zoom-in");
@@ -233,6 +234,9 @@ function getPixelOnCursor(e) {
 
   cursor_x -= canvas.offsetLeft;
   cursor_y -= canvas.offsetTop;
+
+  cursor_x += canvasContainer.scrollLeft;
+  cursor_y += canvasContainer.scrollTop;
 
   x = Math.floor(cursor_x / pixelSize);
   y = Math.floor(cursor_y / pixelSize);
