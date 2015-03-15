@@ -22,7 +22,8 @@ var pixels;
 var penMode;
 
 //-- State variables
-var drawing = false;
+var drawing = false;   // For continuous drawing
+var prevPixel;         // To prevent fill-clear effect while mouse moving on same pixel in toggle mode. 
 
 //-- Predefined variables
 var displayWidth = 84;
@@ -56,16 +57,21 @@ function initEventListeners() {
     var pixel = getPixelOnCursor(e);
     onClickPixel(pixel);
     drawing = true;
+    prevPixel = pixel;
   });
 
   canvas.addEventListener("mouseup", function(e) {
     drawing = false;
+    prevPixel = null;
   });
 
   canvas.addEventListener("mousemove", function(e) {
     if ( drawing ) {
       var pixel = getPixelOnCursor(e);
-      onClickPixel(pixel);
+      if ( !(pixel.x == prevPixel.x && pixel.y == prevPixel.y) ) {
+        onClickPixel(pixel);
+        prevPixel = pixel;
+      }
     }
   });
 
