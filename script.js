@@ -6,13 +6,15 @@
 
 //-- Dom elements
 var canvas = document.getElementById("canvas");
+var context = canvas.getContext("2d");
 var canvasContainer = document.getElementById("canvas-container");
 var btnClean = document.getElementById("button-clean");
 var btnReverse = document.getElementById("button-reverse");
 var btnZoomIn = document.getElementById("button-zoom-in");
 var btnZoomOut = document.getElementById("button-zoom-out");
 var penModes = document.penModes.penMode
-var context = canvas.getContext("2d");
+var output = document.getElementById("output");
+var btnGenerate = document.getElementById("button-generate");
 
 //-- Global variables
 // Holds all pixel status(1 or 0) as a matrix. 
@@ -113,6 +115,71 @@ function initEventListeners() {
       penMode = this.value;
     }
   }
+
+  btnGenerate.onclick = function(e) {
+    e.preventDefault;
+    generateOutput();
+  }
+}
+
+function generateOutput() {
+  var outputText = "";
+  outputText += "// Hexadecimal output for 84x48 lcd.\n";
+  outputText += "// Created with lcd-pixel-art:\n";
+  outputText += "// http://ahaltindis.github.io/lcd-pixel-art\n\n\n";
+
+  var allstr = "";
+  var cellstr = "";
+  var colstr = "";
+  var pixstr = ""
+  allstr = "[\n";
+  for ( var cellRow = 0; cellRow < 6; cellRow++ ) {
+    allstr += "//--- row " + cellRow + "\n";
+    cellstr = "[\n";
+    for ( var cellCol = 0; cellCol < 14; cellCol++) {
+      colstr = "[";
+      for ( var rowNumber = 0; rowNumber < 6; rowNumber++) {
+        for ( var colNumber = 0; colNumber < 8; colNumber++ ) {
+          pixstr +=pixels[(cellCol*6)+rowNumber][(cellRow*8)+colNumber];
+        }
+        colstr += bin2hex(pixstr);
+        pixstr = "";
+        if ( rowNumber != 5 )
+          colstr += ", ";
+      }
+      colstr += "]";
+      if ( cellCol != 13 )
+        colstr += ",";
+
+      colstr += "\t// col " + cellCol + "\n";
+      cellstr += colstr;
+    }
+    cellstr += "]";
+    if ( cellRow != 5 )
+      cellstr += ",\n";
+    allstr += cellstr;
+  }
+  allstr += "];";
+
+  outputText += allstr;
+
+  output.value = outputText;
+}
+
+function bin2hex(bin) {
+  var hexOutput = "";
+  var hexVal = "";
+
+  hexOutput += "0x";
+
+  hexVal += parseInt(bin, 2).toString(16).toUpperCase();
+
+  if ( hexVal.length === 1 ) 
+    hexOutput += "0";
+
+  hexOutput += hexVal
+
+  return hexOutput;
 }
 
 function refillGrid() {

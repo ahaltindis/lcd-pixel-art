@@ -31,7 +31,7 @@ input {
   float: left;
 }
 
-#cont-header {
+#cont-container #header {
   margin: 0 auto;
   text-align: center;
   font-size: 18px;
@@ -54,6 +54,33 @@ input {
   margin-right: 5px;
   font-size: 15px;
   margin-left: 2px;
+}
+
+#output-container {
+  width: 400px;
+  margin: 5px 10px 5px 10px;
+  background-color: #eeeeee;
+  padding: 10px;
+  float: left;
+}
+
+#output-container #header {
+  margin: 0 auto;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#output {
+  background: #fff;
+  width: 387px;
+  height: 250px;
+  border: 1px solid #CCC;
+  margin: 0;
+  padding: 5px;
+  float: left;
+  resize: none;
+  font: normal 1em/1 monospace;
 }
 
 #forkongithub a { background:#000; color:#fff; text-decoration:none; font-family:arial,sans-serif; text-align:center; font-weight:bold; padding:5px 20px; font-size:0.9rem; line-height:1.6rem; position:relative; transition:0.5s; }
