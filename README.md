@@ -14,6 +14,14 @@ automatically.
   * Nokia 5110 ( 84x48 )
   * ..
 
+###ToDos
+  * Adding custom shapes
+    * Rectangular
+    * Line
+    * Circle
+
+  * Uploading custom images (bmp, jpeg?)
+
 ###Author
   * [Ahmet ALTINDIS](https://github.com/ahaltindis)
 
